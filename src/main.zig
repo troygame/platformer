@@ -8,7 +8,7 @@ pub fn main() anyerror!void {
     const screenHeight = 450;
 
     var plr: player.Player = .{
-        .gravity = rl.Vector2.init(0, 128),
+        .gravity = rl.Vector2.init(0, 768),
         .velocity = rl.Vector2.init(0, -128),
         .rect = rl.Rectangle.init(100, 200, 32, 32),
     };
@@ -28,6 +28,7 @@ pub fn main() anyerror!void {
 
             rl.clearBackground(.white);
             plr.render();
+
             rl.drawFPS(0, 0);
         }
     }
