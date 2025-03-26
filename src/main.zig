@@ -4,8 +4,8 @@ const rl = @import("raylib");
 const player = @import("player.zig");
 
 pub fn main() anyerror!void {
-    const screenWidth = 800;
-    const screenHeight = 450;
+    const screenWidth = 1280;
+    const screenHeight = 720;
 
     var plr: player.Player = .{
         .gravity = rl.Vector2.init(0, 768),
@@ -13,6 +13,10 @@ pub fn main() anyerror!void {
         .rect = rl.Rectangle.init(100, 200, 32, 32),
     };
 
+    rl.setConfigFlags(.{
+        .window_resizable = true,
+        .window_highdpi = true,
+    });
     rl.initWindow(screenWidth, screenHeight, "platformer");
     defer rl.closeWindow(); // Close window and OpenGL context
 
