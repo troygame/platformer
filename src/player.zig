@@ -1,5 +1,6 @@
 const rl = @import("raylib");
 const std = @import("std");
+const consts = @import("constants.zig");
 
 pub const Player = struct {
     rect: rl.Rectangle,
@@ -16,16 +17,27 @@ pub const Player = struct {
             }
         }
 
+        const calc_vel = if (@abs(self.velocity.x) <= consts.initial_player_speed)
+            consts.initial_player_speed
+        else
+            @abs(self.velocity.x);
         if (rl.isKeyDown(.right)) {
-            self.velocity.x += 1024 * dt;
-        }
-        if (rl.isKeyDown(.left)) {
-            self.velocity.x -= 1024 * dt;
+            self.velocity.x += (calc_vel) * (1 - calc_vel / consts.max_player_speed) * dt * consts.acceleration_multiplier;
         }
 
-        if (@abs(self.velocity.x) != 0) {
-            self.velocity.x -= 4 * self.velocity.x * dt;
+        if (rl.isKeyDown(.left)) {
+            self.velocity.x -= (calc_vel) * (1 - calc_vel / consts.max_player_speed) * dt * consts.acceleration_multiplier;
         }
+
+        // if (self.velocity.x > 0) {
+        //     self.velocity.x -= 512 * dt;
+        // }
+
+        // if (self.velocity.x < 0) {
+        //     self.velocity.x += 512 * dt;
+        // }
+
+        std.debug.print("{d}\n", .{self.velocity.x});
 
         self.rect.x += self.velocity.x * dt;
         self.rect.y += self.velocity.y * dt;
