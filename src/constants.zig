@@ -1,4 +1,4 @@
-pub const max_player_speed = 256.0;
-pub const initial_player_speed = 128.0;
+pub const max_player_speed = 128.0;
+pub const player_acceleration = 2048.0;
 
-pub const acceleration_multiplier = 1.0;
+pub const friction = 512.0;

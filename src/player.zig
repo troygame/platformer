@@ -12,30 +12,31 @@ pub const Player = struct {
 
         if (self.rect.y >= 256) {
             self.velocity.y = 0;
+
+            // apply friction
+            if (self.velocity.x > 0) {
+                self.velocity.x -= @min(consts.friction * dt, @abs(self.velocity.x));
+            }
+
+            if (self.velocity.x < 0) {
+                self.velocity.x += @min(consts.friction * dt, @abs(self.velocity.x));
+            }
             if (rl.isKeyDown(.space)) {
                 self.velocity.y = -256;
             }
         }
 
-        const calc_vel = if (@abs(self.velocity.x) <= consts.initial_player_speed)
-            consts.initial_player_speed
-        else
-            @abs(self.velocity.x);
         if (rl.isKeyDown(.right)) {
-            self.velocity.x += (calc_vel) * (1 - calc_vel / consts.max_player_speed) * dt * consts.acceleration_multiplier;
+            if (self.velocity.x <= consts.max_player_speed) {
+                self.velocity.x += consts.player_acceleration * dt;
+            }
         }
 
         if (rl.isKeyDown(.left)) {
-            self.velocity.x -= (calc_vel) * (1 - calc_vel / consts.max_player_speed) * dt * consts.acceleration_multiplier;
+            if (self.velocity.x >= -consts.max_player_speed) {
+                self.velocity.x -= consts.player_acceleration * dt;
+            }
         }
-
-        // if (self.velocity.x > 0) {
-        //     self.velocity.x -= 512 * dt;
-        // }
-
-        // if (self.velocity.x < 0) {
-        //     self.velocity.x += 512 * dt;
-        // }
 
         std.debug.print("{d}\n", .{self.velocity.x});
 
